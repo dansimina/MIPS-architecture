@@ -58,9 +58,17 @@ The **pipelined** version divides execution into **five stages**, allowing multi
    - Writes computed values to registers.
 
 #### ⚠️ **Pipeline Hazards & Handling**
-- **Data Hazards:** Resolved using **forwarding mechanisms**.
-- **Control Hazards:** Branch prediction and **stalling** implemented.
-- **Structural Hazards:** Avoided by **dedicated instruction/data memory**.
+Since pipelining introduces **hazards** that can disrupt execution, different strategies exist for handling them. In this project, hazards were resolved using **stall cycles**, though more efficient methods exist.
+
+- **Data Hazards:** These occur when an instruction depends on the result of a previous instruction that has not yet completed. In this project, they were resolved using **stall cycles** (pipeline bubbles) to delay execution until data dependencies are resolved.
+  - ✅ **More efficient alternative**: **Forwarding** could be used to eliminate unnecessary stalls by passing computed values directly from the ALU output back to earlier stages.
+
+- **Control Hazards:** These occur when branch instructions modify the flow of execution. In this project, **pipeline stalls** were introduced after branches to ensure correct instruction sequencing.
+  - ✅ **More efficient alternative**: **Branch prediction** could be used to guess the outcome of branches in advance, reducing stalls when predictions are correct.
+
+- **Structural Hazards:** These happen when different instructions require the same hardware resource simultaneously. In this project, they were **avoided by performing memory reads and writes on different clock edges**, ensuring that an instruction can read from a register in one cycle while another writes to it in the next.
+
+While techniques like **forwarding, branch prediction, and dynamic scheduling** could improve performance, the current implementation **strictly uses stalling** for simplicity and correctness in hazard resolution.
 
 ---
 
